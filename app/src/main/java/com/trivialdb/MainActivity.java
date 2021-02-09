@@ -118,4 +118,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
     }
+    public void onClickMantenimiento(View v){
+        Intent intent=new Intent (this, GestionPreguntas.class);
+        startActivityForResult(intent,1);
+    }
 }
