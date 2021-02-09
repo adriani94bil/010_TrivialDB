@@ -1,23 +1,23 @@
 package com.trivialdb.model;
 
 public class Pregunta {
-    public long id;
+    public int id;
     public String descripcion;
     public boolean isCorrecto;
     public String mensaje;
 
-    public Pregunta(long id, String descripcion, boolean isCorrecto, String mensaje) {
+    public Pregunta(int id, String descripcion, boolean isCorrecto, String mensaje) {
         this.id = id;
         this.descripcion = descripcion;
         this.isCorrecto = isCorrecto;
         this.mensaje = mensaje;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
