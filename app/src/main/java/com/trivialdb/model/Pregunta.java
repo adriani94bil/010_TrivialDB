@@ -13,6 +13,12 @@ public class Pregunta {
         this.mensaje = mensaje;
     }
 
+    public Pregunta(String descripcion, boolean isCorrecto, String mensaje) {
+        this.descripcion = descripcion;
+        this.isCorrecto = isCorrecto;
+        this.mensaje = mensaje;
+    }
+
     public int getId() {
         return id;
     }

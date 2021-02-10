@@ -54,7 +54,7 @@ public class TrivialDataBase extends SQLiteOpenHelper {
         }
         return lista;
     }
-    public int crearRegistro (String pregunta, boolean isCorrecto, String mensaje){
+    public long crearRegistro (String pregunta, boolean isCorrecto, String mensaje){
         SQLiteDatabase db=getWritableDatabase();
         ContentValues values=new ContentValues();
         values.put("pregunta",pregunta);
@@ -64,7 +64,7 @@ public class TrivialDataBase extends SQLiteOpenHelper {
             values.put("isCorrecto",0);
         }
         values.put("mensaje",mensaje);
-        return (int) db.insert("PREGUNTAS", null, values);
+        return  db.insert("PREGUNTAS", null, values);
     }
     public Pregunta buscarPorId(long id) {
         Pregunta returnVal=null;
@@ -95,5 +95,17 @@ public class TrivialDataBase extends SQLiteOpenHelper {
         SQLiteDatabase db=getWritableDatabase();
         return db.delete("PREGUNTAS","_id=?", new String[]{String.valueOf(id)});
 
+    }
+    public int modificarRegistro(Pregunta pregunta) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("_id", pregunta.getId());
+        values.put("descripcion", pregunta.getDescripcion());
+        values.put("isCorrecto", pregunta.isCorrecto()? 1: 0);
+        values.put("mensaje", pregunta.getMensaje());
+        return db.update("preguntas",
+                values,
+                "id = ?",
+                new String[]{String.valueOf(pregunta.getId())});
     }
 }

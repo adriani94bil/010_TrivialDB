@@ -5,12 +5,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.trivialdb.GestionPreguntas;
 import com.trivialdb.R;
 import com.trivialdb.database.TrivialDataBase;
 import com.trivialdb.model.Pregunta;
@@ -21,9 +23,16 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.MiViewHolder> {
 
     private List<Pregunta> listaPregunta;
     private TrivialDataBase mDB;
+    private GestionPreguntas mtoActivity;
 
-    public Adaptador(List<Pregunta> listaPregunta) {
-        this.listaPregunta=listaPregunta;
+    private int posicionSel = 0;
+
+
+    public Adaptador( TrivialDataBase db, GestionPreguntas mtoActivity) {
+
+        this.mDB=db;
+        this.mtoActivity=mtoActivity;
+        listaPregunta=mDB.getListaPalabras();
     }
 
     @NonNull
@@ -46,9 +55,24 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.MiViewHolder> {
             @Override
             public void onClick(View v) {
                 // Lo quito de la lista y lo borro
+                mDB.borrarRegistro(listaPregunta.get(position).getId());
                 listaPregunta.remove(position);
-                mDB.borrarRegistro(position);
+                notifyItemRemoved(position);
                 notifyItemRangeChanged(position,getItemCount());
+            }
+        });
+        //Asigno a cada linea un onclick para seleccionarlo
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Pregunta preguntaSel=listaPregunta.get(position);
+                mtoActivity.editTextDescripcion.setText(preguntaSel.getDescripcion());
+                mtoActivity.checkBoxNew.setChecked(preguntaSel.isCorrecto());
+                mtoActivity.editTextMensaje.setText(preguntaSel.getMensaje());
+                mtoActivity.preguntaSeleccionada=preguntaSel;
+                posicionSel=position;
+
+
             }
         });
     }
@@ -62,8 +86,15 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.MiViewHolder> {
         }
     }
     public void addPregunta(Pregunta pregunta){
+        long id=mDB.crearRegistro(pregunta.getDescripcion(),pregunta.isCorrecto(),pregunta.getMensaje());
+        pregunta.setId((int)id);
         this.listaPregunta.add(pregunta);
         notifyItemInserted(listaPregunta.size());
+    }
+    public void update(Pregunta pregunta){
+        mDB.modificarRegistro(pregunta);
+        notifyItemChanged(posicionSel);
+        posicionSel = 0;
     }
     public class MiViewHolder extends RecyclerView.ViewHolder{
 
@@ -72,6 +103,7 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.MiViewHolder> {
         public TextView mensajeView;
         public CheckBox checkBox;
         public Button botonBorrar;
+
 
         public MiViewHolder(@NonNull View itemView) {
             super(itemView);
