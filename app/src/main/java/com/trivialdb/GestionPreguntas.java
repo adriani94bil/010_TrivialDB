@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -78,19 +79,23 @@ public class GestionPreguntas extends AppCompatActivity implements View.OnClickL
                             this.editTextMensaje.getText().toString()
                     );
 
-                    ((Adaptador) recyclerView.getAdapter()).addPregunta(nueva);
+                    miadapter.addPregunta(nueva);
 
                 }else {
                     // MODIFICAR
                     preguntaSeleccionada.setDescripcion(editTextDescripcion.getText().toString());
                     preguntaSeleccionada.setMensaje(editTextMensaje.getText().toString());
                     preguntaSeleccionada.setCorrecto(checkBoxNew.isChecked());
-                    ((Adaptador) recyclerView.getAdapter())
-                            .update(preguntaSeleccionada);
+                    miadapter.update(preguntaSeleccionada);
                     preguntaSeleccionada = null;
                 }
+                editTextDescripcion.setText("");
+                editTextMensaje.setText("");
                 break;
             case R.id.btnCerrarGestion:
+                Intent intent= new Intent();
+                intent.putExtra("mantenimiento", true);
+                setResult(MainActivity.RESULT_OK,intent);
                 finish();
                 break;
 

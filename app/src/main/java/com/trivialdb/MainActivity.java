@@ -1,10 +1,13 @@
 package com.trivialdb;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SimpleCursorAdapter;
@@ -47,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         cargarListaPreguntas();
     }
     private void cargarListaPreguntas(){
+        listaPregunta = mDB.getListaPalabras();
         this.textViewPregunta.setText(listaPregunta.get(idPreguntaActual).getDescripcion());
     }
     private void inicializar(){
@@ -121,5 +125,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClickMantenimiento(View v){
         Intent intent=new Intent (this, GestionPreguntas.class);
         startActivityForResult(intent,1);
+    }
+
+    //MENU
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId()==R.id.opcionMto){
+            Intent intent=new Intent (this, GestionPreguntas.class);
+            startActivityForResult(intent,1);
+            return true;
+
+        }else{
+
+            return super.onContextItemSelected(item);
+
+        }
     }
 }

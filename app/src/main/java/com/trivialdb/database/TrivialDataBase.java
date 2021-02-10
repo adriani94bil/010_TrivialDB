@@ -57,7 +57,7 @@ public class TrivialDataBase extends SQLiteOpenHelper {
     public long crearRegistro (String pregunta, boolean isCorrecto, String mensaje){
         SQLiteDatabase db=getWritableDatabase();
         ContentValues values=new ContentValues();
-        values.put("pregunta",pregunta);
+        values.put("descripcion",pregunta);
         if (isCorrecto==true){
             values.put("isCorrecto",1);
         }else{
@@ -105,7 +105,7 @@ public class TrivialDataBase extends SQLiteOpenHelper {
         values.put("mensaje", pregunta.getMensaje());
         return db.update("preguntas",
                 values,
-                "id = ?",
+                "_id=?",
                 new String[]{String.valueOf(pregunta.getId())});
     }
 }
