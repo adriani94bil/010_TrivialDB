@@ -2,6 +2,7 @@ package com.trivialdb;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -125,7 +126,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    //MENU
+    //MENU (Enlace + modoNight)
 
 
     @Override
@@ -136,15 +137,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        // Enlace a mantenimiento
         if (item.getItemId()==R.id.opcionMto){
             Intent intent=new Intent (this, GestionPreguntas.class);
             startActivityForResult(intent,1);
             return true;
 
+            //Modo Noche
+        }else if(item.getItemId()==R.id.nightMode){
+            if(AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_NO){
+
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            }else{
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            }
+            return true;
         }else{
 
             return super.onContextItemSelected(item);
-
         }
     }
 }

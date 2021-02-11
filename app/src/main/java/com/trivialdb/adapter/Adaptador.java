@@ -1,5 +1,7 @@
 package com.trivialdb.adapter;
 
+import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.trivialdb.GestionPreguntas;
@@ -54,11 +57,25 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.MiViewHolder> {
         holder.botonBorrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Lo quito de la lista y lo borro
-                mDB.borrarRegistro(listaPregunta.get(position).getId());
-                listaPregunta.remove(position);
-                notifyItemRemoved(position);
-                notifyItemRangeChanged(position,getItemCount());
+                AlertDialog.Builder builder=new AlertDialog.Builder(mtoActivity);
+
+                builder.setTitle("Vas a borrar el registro")
+                        .setMessage("Estas seguro?")
+                        .setPositiveButton("Borrar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                borrar(position);
+                            }
+                        })
+                        .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                Log.d("Cancelar","Se ha cancelado la accion de borrar");
+                            }
+                        });
+
+                builder.create().show();
+
             }
         });
         //Asigno a cada linea un onclick para seleccionarlo
@@ -75,6 +92,13 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.MiViewHolder> {
 
             }
         });
+    }
+    public void borrar(int position){
+        // Lo quito de la lista y lo borro
+        mDB.borrarRegistro(listaPregunta.get(position).getId());
+        listaPregunta.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position,getItemCount());
     }
 
     @Override
