@@ -53,9 +53,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         listaPregunta = mDB.getListaPalabras();
         this.textViewPregunta.setText(listaPregunta.get(idPreguntaActual).getDescripcion());
     }
-    private void inicializar(){
 
-    }
     @Override
     public void onClick(View v){
         Log.i("trivial","id boton es "+v.getId());
@@ -98,7 +96,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 this.btnBack.setEnabled(true);
 
             }
-            cargarListaPreguntas();
+            if (requesCode==2){
+                this.cargarListaPreguntas();
+
+            }
             Log.i("main","resultado es"+ numero);
         }
     }
@@ -122,10 +123,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
 
     }
-    public void onClickMantenimiento(View v){
-        Intent intent=new Intent (this, GestionPreguntas.class);
-        startActivityForResult(intent,1);
-    }
+
 
     //MENU
 
