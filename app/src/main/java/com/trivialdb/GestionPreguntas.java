@@ -1,5 +1,6 @@
 package com.trivialdb;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -8,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -100,6 +103,37 @@ public class GestionPreguntas extends AppCompatActivity implements View.OnClickL
                 finish();
                 break;
 
+        }
+    }
+    //MENU (Enlace + modoNight)
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        // Enlace a mantenimiento
+        if (item.getItemId()==R.id.opcionMto){
+            Intent intent=new Intent (this, GestionPreguntas.class);
+            startActivityForResult(intent,1);
+            return true;
+
+            //Modo Noche
+        }else if(item.getItemId()==R.id.nightMode){
+            if(AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_NO){
+
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            }else{
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            }
+            return true;
+        }else{
+
+            return super.onContextItemSelected(item);
         }
     }
 }

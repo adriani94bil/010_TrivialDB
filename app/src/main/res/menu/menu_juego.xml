@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/opcionReiniciar"
+        android:title="REINICIAR" />
+    <item
+        android:id="@+id/opcionAyuda"
+        android:title="CON AYUDA" />
+</menu>

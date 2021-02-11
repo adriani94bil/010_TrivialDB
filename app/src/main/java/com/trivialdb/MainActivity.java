@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.textViewPregunta = findViewById(R.id.textViewPregunta);
         this.avisoView=findViewById(R.id.avisoView);
 
+        registerForContextMenu(this.textViewPregunta);
         mDB = new TrivialDataBase(MainActivity.this);
 
         listaPregunta = mDB.getListaPalabras();
@@ -62,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch(v.getId()){
             case R.id.btn_falso:
                 respuesta=false;
+
                 break;
             case R.id.btn_verdadero:
                 respuesta=true;
@@ -92,9 +95,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 this.idPreguntaActual=0;
                 this.sumatorio=0;
                 this.btnForward.setEnabled(true);
+                cargarListaPreguntas();
             }else{
                 this.idPreguntaActual++;
                 this.btnBack.setEnabled(true);
+                cargarListaPreguntas();
 
             }
             if (requesCode==2){
@@ -154,6 +159,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return true;
         }else{
 
+            return super.onContextItemSelected(item);
+        }
+    }
+
+    //Menu Contextual
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+
+        if (v.getId()==R.id.textViewPregunta){
+            getMenuInflater().inflate(R.menu.menu_juego,menu);
+
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId()==R.id.opcionReiniciar){
+            cargarListaPreguntas();
+            return true;
+        }else{
             return super.onContextItemSelected(item);
         }
     }
