@@ -66,6 +66,8 @@ public class GestionPreguntas extends AppCompatActivity implements View.OnClickL
         list= mDB.getListaPalabras();
         miadapter=new Adaptador(mDB,this);
         recyclerView.setAdapter(miadapter);
+
+
     }
 
     @Override

@@ -9,6 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.010_TrivialDB">
+        <service
+            android:name=".service.MusicService"
+            android:enabled="true"
+            android:exported="true"></service>
+
         <activity android:name=".GestionPreguntas" />
         <activity android:name=".Mensaje" />
         <activity android:name=".MainActivity">

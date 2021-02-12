@@ -5,6 +5,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -54,6 +56,7 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.MiViewHolder> {
         holder.preguntaView.setText(pregunta.getDescripcion());
         holder.mensajeView.setText(pregunta.getMensaje());
         holder.checkBox.setChecked(pregunta.isCorrecto());
+
         holder.botonBorrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,6 +68,7 @@ public class Adaptador extends RecyclerView.Adapter<Adaptador.MiViewHolder> {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 borrar(position);
+
                             }
                         })
                         .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {

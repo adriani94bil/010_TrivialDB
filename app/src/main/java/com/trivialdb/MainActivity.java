@@ -11,12 +11,15 @@ import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 import com.trivialdb.database.TrivialDataBase;
 import com.trivialdb.model.Pregunta;
+import com.trivialdb.service.MusicService;
 
 import java.util.List;
 
@@ -30,8 +33,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView avisoView;
     private int idPreguntaActual=0;
     private int sumatorio=0;
+    private int countFallos=0;
     private List<Pregunta> listaPregunta;
     private TrivialDataBase mDB;
+    Animation animFade;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +50,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.btnForward=findViewById(R.id.btnForward);
         this.textViewPregunta = findViewById(R.id.textViewPregunta);
         this.avisoView=findViewById(R.id.avisoView);
+
+        //Musica
+
+        Intent servicio= new Intent(MainActivity.this, MusicService.class);
+        startService(servicio);
 
         registerForContextMenu(this.textViewPregunta);
         mDB = new TrivialDataBase(MainActivity.this);
@@ -64,7 +74,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch(v.getId()){
             case R.id.btn_falso:
                 respuesta=false;
-
                 break;
             case R.id.btn_verdadero:
                 respuesta=true;
@@ -78,9 +87,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }else{
             Log.i("trivial","fallo");
             res="Fallastes";
+            countFallos++;
             expl=listaPregunta.get(idPreguntaActual).getMensaje();
         }
-        this.avisoView.setText("ACIERTOS  "+sumatorio);
+        animFade=AnimationUtils.loadAnimation(getApplicationContext(), R.anim.animacion_puntuacion);
+        this.avisoView.setText("ACIERTOS  "+sumatorio+"  "+"FALLOS  "+countFallos);
+        avisoView.startAnimation(animFade);
         Intent intent=new Intent (this, Mensaje.class);
         intent.putExtra("dato",res);
         intent.putExtra("explicacion",expl);
@@ -93,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             int numero=data.getIntExtra("resultado",0);
             if(idPreguntaActual==this.listaPregunta.size()-1){
                 this.idPreguntaActual=0;
-                this.sumatorio=0;
+//                this.sumatorio=0;
                 this.btnForward.setEnabled(true);
                 cargarListaPreguntas();
             }else{
@@ -183,5 +195,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }else{
             return super.onContextItemSelected(item);
         }
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Intent servicio= new Intent(MainActivity.this, MusicService.class);
+        stopService(servicio);
     }
 }

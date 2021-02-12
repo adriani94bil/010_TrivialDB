@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">El Triviados</string>
+    <string name="btn_back">ANTERIOR</string>
+    <string name="btn_forward">SIGUIENTE</string>
+    <string name="btn_false">FALSO</string>
+    <string name="btn_true">VERDADERO</string>
+    <string name="btn_close">CERRAR</string>
+</resources>
